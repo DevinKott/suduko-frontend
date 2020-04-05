@@ -58,6 +58,8 @@ function App() {
                     blackBorderLeft={cellIndex === 3 || cellIndex === 6}
                 >
                     <CellInput
+                        type="text"
+                        pattern={`[0-9]`}
                         defaultValue={cell === 0 ? `` : `${cell}`}
                         onChange={event => {
                             const inp = event.target.value;
@@ -66,6 +68,12 @@ function App() {
                                 event.preventDefault();
                                 event.target.value = "";
                             } else {
+                                if (inp > 9 || inp < 0) {
+                                    event.preventDefault();
+                                    event.target.value = "";
+                                    return;
+                                }
+
                                 let index = rowIndex * 9 + cellIndex;
                                 setGame(
                                     game.substring(0, index) +
@@ -120,6 +128,9 @@ const CellInput = styled.input`
     padding: 0;
     text-align: center;
     outline: none;
+
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
 `;
 
 const Table = styled.table`
