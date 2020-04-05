@@ -59,7 +59,8 @@ function App() {
                 >
                     <CellInput
                         type="text"
-                        pattern={`[0-9]`}
+                        pattern={`/d`}
+                        inputMode={`numeric`}
                         defaultValue={cell === 0 ? `` : `${cell}`}
                         onChange={event => {
                             const inp = event.target.value;
