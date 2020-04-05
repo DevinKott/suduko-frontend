@@ -8,22 +8,35 @@ function App() {
         `000000000000000000000000000000000000000000000000000000000000000000000000000000000`
     );
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(``);
 
     const fetch = async () => {
-        setLoading(true);
-        const result = await axios(
-            `https://ghh35l6n76.execute-api.us-east-2.amazonaws.com/prod/solveSuduko?gameState=${game}`
-        );
-        setLoading(false);
-
-        if (
-            result.data === "Could not solve." ||
-            result.data === `No gameState query parameter defined.` ||
-            result.data === `No query parameters defined.`
-        ) {
-        } else {
-            setGame(result.data);
+        if (game.length !== 81) {
+            setError(`Game State is corrupted. Please refresh.`);
+            return;
         }
+
+        setLoading(true);
+        let result = null;
+        try {
+            result = await axios(
+                `https://ghh35l6n76.execute-api.us-east-2.amazonaws.com/prod/solveSuduko?gameState=${game}`
+            );
+
+            if (
+                result.data === "Could not solve." ||
+                result.data === `No gameState query parameter defined.` ||
+                result.data === `No query parameters defined.`
+            ) {
+            } else {
+                setGame(result.data);
+            }
+        } catch (error) {
+            setError(`Server Error. Refresh and try again.`);
+            console.error(error);
+        }
+
+        setLoading(false);
     };
 
     if (loading) {
@@ -97,6 +110,7 @@ function App() {
             <Table>
                 <TableBody>{table}</TableBody>
             </Table>
+            {error !== `` && <span>{error}</span>}
             <button
                 onClick={() => {
                     fetch();
