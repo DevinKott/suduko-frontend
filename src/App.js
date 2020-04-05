@@ -26,8 +26,10 @@ function App() {
             if (
                 result.data === "Could not solve." ||
                 result.data === `No gameState query parameter defined.` ||
-                result.data === `No query parameters defined.`
+                result.data === `No query parameters defined.` ||
+                result.data === `Game state string not correct length.`
             ) {
+                setError(result.data);
             } else {
                 setGame(result.data);
             }
