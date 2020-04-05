@@ -69,16 +69,17 @@ function App() {
                                 event.preventDefault();
                                 event.target.value = "";
                             } else {
+                                let toSet = inp;
                                 if (inp > 9 || inp < 0) {
                                     event.preventDefault();
                                     event.target.value = "";
-                                    return;
+                                    toSet = 0;
                                 }
 
                                 let index = rowIndex * 9 + cellIndex;
                                 setGame(
                                     game.substring(0, index) +
-                                        inp +
+                                        toSet +
                                         game.substring(index + 1)
                                 );
                             }
